@@ -9,6 +9,7 @@ export default function Copyright(props) {
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
+            
         </Typography>
     );
 }

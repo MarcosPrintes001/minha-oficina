@@ -12,6 +12,7 @@ const Routes = () => {
            <Route component = { Home }  path="/home" />
            <Route component = { UserPage }  path="/usuario" />
        </BrowserRouter>
+       
    )
 }
 

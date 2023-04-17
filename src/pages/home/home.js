@@ -78,6 +78,7 @@ const Home = () => {
                     </Tabs>
                 </Box>
 
+
                 <TabPanel value={value} index={0} >
                     <FormularioCadastroVeiculo onCadastroVeiculo={handleCadastroVeiculo} />
 

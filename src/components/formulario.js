@@ -43,6 +43,7 @@ const FormularioCadastroVeiculo = () => {
                 onChange={(e) => setPlaca(e.target.value)} // Atualize o estado local com o valor inserido
                 fullWidth
                 margin="normal"
+                
             />
 
             <TextField

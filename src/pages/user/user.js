@@ -11,6 +11,7 @@ const UserPage = () => {
         modelo: '',
         status: ''
     });
+    
     const [erro, setErro] = useState(null);
     const [novoEstado, setNovoEstado] = useState(null)
 
