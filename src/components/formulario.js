@@ -70,6 +70,7 @@ const FormularioCadastroVeiculo = () => {
             <FormControl fullWidth>
                 <InputLabel>Status Concerto</InputLabel>
                 <Select
+                    label="Status Concerto"
                     name="statusConcerto"
                     value={veiculo.statusConcerto}
                     onChange={handleChange}

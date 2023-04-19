@@ -156,7 +156,9 @@ const TabelaVeiculos = () => {
             <InputLabel>Status Concerto</InputLabel>
             <Select
               value={veiculoEdit.statusConcerto}
+              label="status Concerto"
               name="statusConcerto"
+
               onChange={handleChange}
             >
               <MenuItem value="Veículo recebido">Veículo recebido</MenuItem>
