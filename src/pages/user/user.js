@@ -9,7 +9,7 @@ const UserPage = () => {
         placa: '',
         marca: '',
         modelo: '',
-        status: ''
+        statusConcerto: ''
     });
     
     const [erro, setErro] = useState(null);
@@ -18,6 +18,7 @@ const UserPage = () => {
     const handleSearch = () => {
         axios.get(`https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos?placa=${placa}`)
             .then(response => {
+                setPlaca('')
                 setNovoEstado(response.data[0]);
                 setErro(null);
             })
@@ -35,14 +36,14 @@ const UserPage = () => {
                 placa: novoEstado.placa,
                 marca: novoEstado.marca,
                 modelo: novoEstado.modelo,
-                status: novoEstado.status
+                statusConcerto: novoEstado.statusConcerto
             })
         } else {
             setResultado({
                 placa: '',
                 marca: '',
                 modelo: '',
-                status: ''
+                statusConcerto: ''
             })
         }
     }, [novoEstado])
@@ -84,7 +85,7 @@ const UserPage = () => {
                         Modelo: {resultado.modelo}
                     </Typography>
                     <Typography variant="body1" paddingLeft={2}>
-                        Status: {resultado.status}
+                        Status: {resultado.statusConcerto}
                     </Typography>
                 </div>
             )}

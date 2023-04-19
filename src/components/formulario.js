@@ -27,7 +27,12 @@ const FormularioCadastroVeiculo = () => {
                 // Lógica para tratar a resposta da API, se necessário
                 console.log("Veículo cadastrado:", response.data);
                 // Limpa estado local do formulário
-                setVeiculo({});
+                setVeiculo({
+                    placa: "",
+                    marca: "",
+                    modelo: "",
+                    statusConcerto: ""
+                });
             })
             .catch((error) => {
                 // Lógica para tratar erros na requisição à API
