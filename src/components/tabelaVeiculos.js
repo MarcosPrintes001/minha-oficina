@@ -13,8 +13,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const TabelaVeiculos = () => {
+  const [veiculosAtualizados, setVeiculosAtualizados] = useState([]);
   const [veiculos, setVeiculos] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [veiculoEdit, setVeiculoEdit] = useState({
@@ -22,20 +24,28 @@ const TabelaVeiculos = () => {
     placa: "",
     marca: "",
     modelo: "",
-    status: "",
+    statusConcerto: "",
   });
 
   useEffect(() => {
     const fetchVeiculos = async () => {
       try {
+        // Fazer chamada à API para buscar os veículos
         const response = await axios.get(
           "https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos"
         );
-        setVeiculos(response.data);
+        const veiculos = response.data;
+
+        // Atualizar o estado dos veículos com os dados da API
+        setVeiculos(veiculos);
+        setVeiculosAtualizados(veiculos); // Atualizar também o estado de veículos atualizados
+
+        console.log("Veículos buscados:", veiculos);
       } catch (error) {
-        console.error("Erro ao obter os veículos:", error);
+        console.error("Erro ao buscar os veículos:", error);
       }
     };
+
     fetchVeiculos();
   }, []);
 
@@ -48,12 +58,28 @@ const TabelaVeiculos = () => {
     setOpenDialog(false);
   };
 
-  const handleSalvarEdicao = () => {
-    //Mandar para api salvar usando post
-    console.log("Salvar edição do veículo:", veiculoEdit);
-    
-    handleCloseDialog();
+  const handleSalvarEdicao = async () => {
+    try {
+      // Fazer chamada à API para salvar as alterações
+      await axios.put(
+        `https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos/${veiculoEdit.id}`,
+        veiculoEdit
+      );
+      console.log("Salvou edição do veículo:", veiculoEdit);
+
+      // Atualizar o estado dos veículos com os dados atualizados
+      const veiculosAtualizados = veiculos.map((veiculo) =>
+        veiculo.id === veiculoEdit.id ? veiculoEdit : veiculo
+      );
+      setVeiculos(veiculosAtualizados);
+      setVeiculosAtualizados(veiculosAtualizados);
+
+      handleCloseDialog();
+    } catch (error) {
+      console.error("Erro ao salvar as alterações do veículo:", error);
+    }
   };
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -63,7 +89,7 @@ const TabelaVeiculos = () => {
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table>
+        <Table style={{ overflow: 'auto', maxHeight: '400px' }}>
           <TableHead>
             <TableRow>
               <TableCell>Placa</TableCell>
@@ -75,12 +101,12 @@ const TabelaVeiculos = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {veiculos.map((veiculo) => (
+            {veiculosAtualizados.map((veiculo) => (
               <TableRow key={veiculo.id}>
                 <TableCell>{veiculo.placa}</TableCell>
                 <TableCell>{veiculo.marca}</TableCell>
                 <TableCell>{veiculo.modelo}</TableCell>
-                <TableCell>{veiculo.status}</TableCell>
+                <TableCell>{veiculo.statusConcerto}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
@@ -93,6 +119,7 @@ const TabelaVeiculos = () => {
               </TableRow>
             ))}
           </TableBody>
+
         </Table>
       </TableContainer>
 
@@ -124,14 +151,21 @@ const TabelaVeiculos = () => {
             value={veiculoEdit.modelo}
             onChange={handleChange}
           />
-          <TextField
-            margin="dense"
-            label="Status"
-            fullWidth
-            name="status"
-            value={veiculoEdit.status}
-            onChange={handleChange}
-          />
+
+          <FormControl>
+            <InputLabel>Status Concerto</InputLabel>
+            <Select
+              value={veiculoEdit.statusConcerto}
+              name="statusConcerto"
+              onChange={handleChange}
+            >
+              <MenuItem value="Veículo recebido">Veículo recebido</MenuItem>
+              <MenuItem value=" Serviço Iniciado"> Serviço Iniciado</MenuItem>
+              <MenuItem value="Aguardando Peça">Aguardando Peça</MenuItem>
+              <MenuItem value="Serviço Finalizado">Serviço Finalizado</MenuItem>
+            </Select>
+          </FormControl>
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
@@ -140,7 +174,7 @@ const TabelaVeiculos = () => {
           <Button onClick={handleSalvarEdicao} color="primary">
             Salvar
           </Button>
-          
+
         </DialogActions>
       </Dialog>
     </div>

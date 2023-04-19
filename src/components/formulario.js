@@ -1,76 +1,83 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import TabelaVeiculos from "./tabelaVeiculos"; // Importe o componente TabelaVeiculos aqui
-
-
+import axios from "axios";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const FormularioCadastroVeiculo = () => {
+    const [veiculo, setVeiculo] = useState({
+        placa: "",
+        marca: "",
+        modelo: "",
+        statusConcerto: ""
+    });
 
-    const [placa, setPlaca] = useState("");
-    const [modelo, setModelo] = useState("");
-    const [marca, setMarca] = useState("");
-    const [statusConcerto, setStatusConcerto] = useState("");
-
+    const handleChange = event => {
+        const { name, value } = event.target;
+        setVeiculo({ ...veiculo, [name]: value });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Crie um objeto com os dados do novo veículo a partir do estado local
-        const novoVeiculoData = {
-            placa,
-            modelo,
-            nomeDono: marca,
-            statusConcerto,
-        };
-
-        console.log(novoVeiculoData)
-        //Mandar dados pra api
-
-        // Limpa estado local do formulário
-        setPlaca("");
-        setModelo("");
-        setMarca("");
-        setStatusConcerto("");
+        // Faz a requisição POST para a API mockada usando o Axios
+        axios
+            .post("https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos", veiculo)
+            .then((response) => {
+                // Lógica para tratar a resposta da API, se necessário
+                console.log("Veículo cadastrado:", response.data);
+                // Limpa estado local do formulário
+                setVeiculo({});
+            })
+            .catch((error) => {
+                // Lógica para tratar erros na requisição à API
+                console.error("Erro ao cadastrar veículo:", error);
+            });
     };
 
-
     return (
-        <form onSubmit={handleSubmit} defaultChecked='false'>
+        <form onSubmit={handleSubmit} defaultChecked="false">
             <TextField
                 label="Placa"
-                value={placa}
-                onChange={(e) => setPlaca(e.target.value)} // Atualize o estado local com o valor inserido
+                name="placa"
+                value={veiculo.placa}
+                onChange={handleChange}
                 fullWidth
                 margin="normal"
-                
             />
 
-            <TextField
-                label="Modelo"
-                value={modelo}
-                onChange={(e) => setModelo(e.target.value)}
-                fullWidth
-                margin="normal"
-            />
             <TextField
                 label="Marca"
-                value={marca}
-                onChange={(e) => setMarca(e.target.value)}
+                name="marca"
+                value={veiculo.marca}
+                onChange={handleChange}
                 fullWidth
                 margin="normal"
             />
             <TextField
-                label="Status do Concerto"
-                value={statusConcerto}
-                onChange={(e) => setStatusConcerto(e.target.value)}
+                label="Modelo"
+                name="modelo"
+                value={veiculo.modelo}
+                onChange={handleChange}
                 fullWidth
                 margin="normal"
             />
-            <Button type="button" variant="contained" color="primary" onClick={handleSubmit}>
+            <FormControl fullWidth>
+                <InputLabel>Status Concerto</InputLabel>
+                <Select
+                    name="statusConcerto"
+                    value={veiculo.statusConcerto}
+                    onChange={handleChange}
+                >
+                    <MenuItem value="Veículo recebido">Veículo recebido</MenuItem>
+                    <MenuItem value="Serviço Iniciado"> Serviço Iniciado</MenuItem>
+                    <MenuItem value="Aguardando Peça">Aguardando Peça</MenuItem>
+                    <MenuItem value="Serviço Finalizado">Serviço Finalizado</MenuItem>
+                </Select>
+            </FormControl>
+            <Button type="submit" variant="contained" color="primary">
                 Cadastrar
             </Button>
-
         </form>
     );
 };
