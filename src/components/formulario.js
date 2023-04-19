@@ -9,7 +9,10 @@ const FormularioCadastroVeiculo = () => {
         placa: "",
         marca: "",
         modelo: "",
-        statusConcerto: ""
+        nome: "",
+        whats: "",
+        statusConcerto: "",
+
     });
 
     const handleChange = event => {
@@ -24,14 +27,15 @@ const FormularioCadastroVeiculo = () => {
         axios
             .post("https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos", veiculo)
             .then((response) => {
-                // Lógica para tratar a resposta da API, se necessário
-                console.log("Veículo cadastrado:", response.data);
+                
                 // Limpa estado local do formulário
                 setVeiculo({
                     placa: "",
                     marca: "",
                     modelo: "",
-                    statusConcerto: ""
+                    nome: "",
+                    whats: "",
+                    statusConcerto: "",
                 });
             })
             .catch((error) => {
@@ -59,11 +63,27 @@ const FormularioCadastroVeiculo = () => {
                 fullWidth
                 margin="normal"
             />
-            
+
             <TextField
                 label="Modelo"
                 name="modelo"
                 value={veiculo.modelo}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Nome do Veiculo"
+                name="nome"
+                value={veiculo.nome}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="WhatsApp Proprietario"
+                name="whats"
+                value={veiculo.whats}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"

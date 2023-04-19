@@ -24,6 +24,8 @@ const TabelaVeiculos = () => {
     placa: "",
     marca: "",
     modelo: "",
+    nome: "",
+    whats: "",
     statusConcerto: "",
   });
 
@@ -65,7 +67,6 @@ const TabelaVeiculos = () => {
         `https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos/${veiculoEdit.id}`,
         veiculoEdit
       );
-      console.log("Salvou edição do veículo:", veiculoEdit);
 
       // Atualizar o estado dos veículos com os dados atualizados
       const veiculosAtualizados = veiculos.map((veiculo) =>
@@ -96,6 +97,8 @@ const TabelaVeiculos = () => {
               <TableCell>Marca</TableCell>
               <TableCell>Modelo</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Proprietario</TableCell>
+              <TableCell>WhatsApp</TableCell>
               <TableCell>Ações</TableCell>
 
             </TableRow>
@@ -107,6 +110,8 @@ const TabelaVeiculos = () => {
                 <TableCell>{veiculo.marca}</TableCell>
                 <TableCell>{veiculo.modelo}</TableCell>
                 <TableCell>{veiculo.statusConcerto}</TableCell>
+                <TableCell>{veiculo.nome}</TableCell>
+                <TableCell>{veiculo.whats}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
