@@ -26,7 +26,7 @@ const TabelaVeiculos = () => {
     modelo: "",
     nome: "",
     whats: "",
-    statusConcerto: "",
+    statusConcerto: 0,
   });
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const TabelaVeiculos = () => {
       try {
         // Fazer chamada à API para buscar os veículos
         const response = await axios.get(
-          "https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos"
+          "http://localhost:3001/veiculos"
         );
         const veiculos = response.data;
 
@@ -64,7 +64,7 @@ const TabelaVeiculos = () => {
     try {
       // Fazer chamada à API para salvar as alterações
       await axios.put(
-        `https://643824aaf3a0c40814abe5cf.mockapi.io/veiculos/${veiculoEdit.id}`,
+        `http://localhost:3001/veiculos/${veiculoEdit.id}`,
         veiculoEdit
       );
 
@@ -86,6 +86,15 @@ const TabelaVeiculos = () => {
     const { name, value } = event.target;
     setVeiculoEdit({ ...veiculoEdit, [name]: value });
   };
+
+
+  const statusConserto = [
+    {value: 0, name: "Veículo recebido"},
+    {value: 1, name: "Serviço iniciado"},
+    {value: 2, name: "Aguardando peça"},
+    {value: 3, name: "Serviço Finalizado"},
+  ]
+
 
   return (
     <div>
@@ -109,7 +118,7 @@ const TabelaVeiculos = () => {
                 <TableCell>{veiculo.placa}</TableCell>
                 <TableCell>{veiculo.marca}</TableCell>
                 <TableCell>{veiculo.modelo}</TableCell>
-                <TableCell>{veiculo.statusConcerto}</TableCell>
+                <TableCell>{statusConserto.find(status => status.value === veiculoEdit.status)?.name}</TableCell>
                 <TableCell>{veiculo.nome}</TableCell>
                 <TableCell>{veiculo.whats}</TableCell>
                 <TableCell>
@@ -166,10 +175,9 @@ const TabelaVeiculos = () => {
 
               onChange={handleChange}
             >
-              <MenuItem value="Veículo recebido">Veículo recebido</MenuItem>
-              <MenuItem value=" Serviço Iniciado"> Serviço Iniciado</MenuItem>
-              <MenuItem value="Aguardando Peça">Aguardando Peça</MenuItem>
-              <MenuItem value="Serviço Finalizado">Serviço Finalizado</MenuItem>
+              {
+                statusConserto.map(statusCon => <MenuItem key={statusCon.value} value={statusCon.value}> {statusCon.name}</MenuItem>)
+              }
             </Select>
           </FormControl>
 
